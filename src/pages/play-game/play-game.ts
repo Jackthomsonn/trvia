@@ -63,8 +63,8 @@ export class PlayGamePage {
           return
         }
       } else if (!this.isLastQuestion()) {
-        this.correctAnswer = this.questions[this.currentQuestionIndex].correct_answer
-        this.currentQuestion = this.questions[this.currentQuestionIndex].question.replace(/&#*|&|&quot;/, '')
+        this.correctAnswer = this.decode(this.questions[this.currentQuestionIndex].correct_answer)
+        this.currentQuestion = this.decode(this.questions[this.currentQuestionIndex].question)
 
         this.possibleAnswers = this.questions[this.currentQuestionIndex].incorrect_answers
         this.possibleAnswers.push(this.correctAnswer)
@@ -90,6 +90,12 @@ export class PlayGamePage {
   public playAnotherGame() {
     clearTimeout(this.countDownInstance)
     this.navCtrl.popToRoot()
+  }
+
+  public decode(str) {
+    var e = document.createElement('div');
+    e.innerHTML = str;
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
   }
 
   private getGameId() {

@@ -7,8 +7,8 @@
 
   <ion-grid>
     <ion-list radio-group [(ngModel)]="answer">
-      <ion-item *ngFor="let answer of possibleAnswers">
-        <ion-label>{{ answer }}</ion-label>
+      <ion-item *ngFor="let answer of possibleAnswers" text-wrap>
+        <ion-label>{{ decode(answer) }}</ion-label>
         <ion-radio (click)="answerQuestion(answer)" [disabled]="waitingForOtherPlayersMessage !== undefined"></ion-radio>
       </ion-item>
     </ion-list>
