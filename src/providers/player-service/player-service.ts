@@ -11,15 +11,7 @@ export class PlayerServiceProvider {
   constructor(private nativeStorage: NativeStorage) { }
 
   public getPlayerInformation(): Promise<IPlayer> {
-    //return this.nativeStorage.getItem('playerInformation')
-
-    return new Promise(resolve => {
-      resolve({
-        name: 'Test',
-        level: 1,
-        points: 0
-      })
-    })
+    return this.nativeStorage.getItem('playerInformation')
   }
 
   public setPlayerInformation(playerInformation: IPlayer) {
