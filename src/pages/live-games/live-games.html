@@ -8,7 +8,7 @@
       <button (click)="joinGame(game.gameId)" *ngIf="game.gameName">Join game</button>
     </div>
 
-    <div class="game--none" *ngIf="liveGames && liveGames.length === 0">
+    <div class="game--none" *ngIf="liveGames && liveGames.length === 0 || liveGames">
       <span>Waiting for games to become available</span>
       <ion-spinner name="crescent"></ion-spinner>
     </div>

@@ -94,17 +94,15 @@ export class JoinGamePage {
 
   ionViewDidEnter() {
     this.platform.ready().then(() => {
-      this.playerServiceProvider.getPlayerInformation().then(player => {
-        this.playerName = player.name
+      this.playerName = this.playerServiceProvider.playerInformation.name
 
-        this.headerServiceProvider.setup({
-          text: player.name,
-          subText: 'Level ' + player.level,
-          showAlternativeMessage: false
-        })
-      }).catch(() => {
-        this.navCtrl.push(WelcomePage)
+      this.headerServiceProvider.setup({
+        text: this.playerServiceProvider.playerInformation.name,
+        subText: 'Level ' + this.playerServiceProvider.playerInformation.level,
+        showAlternativeMessage: false
       })
+    }).catch(() => {
+      this.navCtrl.push(WelcomePage)
     })
   }
 }

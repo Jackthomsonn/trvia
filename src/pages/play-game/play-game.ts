@@ -31,6 +31,8 @@ export class PlayGamePage {
   private currentQuestionIndex: number
   private toastInstance: Toast
 
+  private disconnectionToast: Toast
+
   @ViewChild(Navbar) navbar: Navbar
 
   constructor(
@@ -173,6 +175,25 @@ export class PlayGamePage {
     this.didIWin = winner.name === this.getPlayerName()
   }
 
+  private handleDisconnection = (socket) => {
+    this.disconnectionToast = this.toastCtrl.create({
+      message: 'Connection was lost, reconnecting..'
+    })
+
+    this.disconnectionToast.present()
+
+    this.navCtrl.popToRoot()
+  }
+
+  private handleReconnection = (socket) => {
+    this.disconnectionToast.dismiss().then(() => {
+      this.toastCtrl.create({
+        message: 'Reconnected successfully',
+        duration: 2000
+      }).present()
+    })
+  }
+
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('theWinner', winner => {
       this.didPlayerWin(winner);
@@ -191,9 +212,16 @@ export class PlayGamePage {
 
       this.startGameTimer()
     })
+
+    this.socketServiceProvider.on('disconnect', this.handleDisconnection)
+
+    this.socketServiceProvider.on('reconnect', this.handleReconnection)
   }
 
   ionViewDidLoad() {
+    this.socketServiceProvider.socket.off('disconnect')
+    this.socketServiceProvider.socket.off('reconnect')
+
     this.setupSocketEventListeners()
 
     this.setupProps()

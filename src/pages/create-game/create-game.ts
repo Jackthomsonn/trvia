@@ -25,25 +25,21 @@ export class CreateGamePage {
   }
 
   public createGame() {
-    this.playerServiceProvider.getPlayerInformation().then(player => {
       this.socketServiceProvider.emit('createGame', {
         gameName: this.gameName,
         isHost: true,
-        playerName: player.name,
+        playerName: this.playerServiceProvider.playerInformation.name,
         private: this.isPrivateGame
       })
-    })
   }
 
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('gameId', (gameId: string) => {
-      this.playerServiceProvider.getPlayerInformation().then(player => {
         this.navCtrl.push(HostGamePage, {
           gameId: gameId,
           isHost: true,
-          playerName: player.name
+          playerName: this.playerServiceProvider.playerInformation.name
         })
-      })
     })
   }
 

@@ -1,8 +1,6 @@
 import { HostGamePage } from './../host-game/host-game';
 import { Component } from '@angular/core'
-import { IonicPage, NavController, NavParams } from 'ionic-angular'
-
-import { WelcomePage } from './../welcome/welcome'
+import { IonicPage, NavController } from 'ionic-angular'
 
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
@@ -17,7 +15,6 @@ import { PlayerServiceProvider } from '../../providers/player-service/player-ser
 export class LiveGamesPage {
   public liveGames: Array<any>
 
-  private playerName: string
   private gameToJoin: string
 
   constructor(
@@ -32,7 +29,7 @@ export class LiveGamesPage {
 
     this.socketServiceProvider.emit('joinGame', {
       gameId: gameId,
-      playerName: this.playerName,
+      playerName: this.playerServiceProvider.playerInformation.name,
       isHost: false
     })
   }
@@ -46,7 +43,7 @@ export class LiveGamesPage {
       this.navCtrl.push(HostGamePage, {
         gameId: this.gameToJoin,
         isHost: false,
-        playerName: this.playerName
+        playerName: this.playerServiceProvider.playerInformation.name
       })
     })
 
@@ -62,16 +59,10 @@ export class LiveGamesPage {
 
     this.socketServiceProvider.emit('getLiveGames')
 
-    this.playerServiceProvider.getPlayerInformation().then(player => {
-      this.playerName = player.name
-
-      this.headerServiceProvider.setup({
-        text: 'Live games',
-        subText: 'Join a live game',
-        showAlternativeMessage: false
-      })
-    }).catch(() => {
-      this.navCtrl.push(WelcomePage)
+    this.headerServiceProvider.setup({
+      text: 'Live games',
+      subText: 'Join a live game',
+      showAlternativeMessage: false
     })
   }
 }
