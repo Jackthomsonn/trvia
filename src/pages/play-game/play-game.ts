@@ -229,7 +229,7 @@ export class PlayGamePage {
     this.setupSplashScreen()
   }
 
-  ionViewDidLeave() {
+  ionViewWillUnload() {
     this.socketServiceProvider.emit('leaveGame', {
       gameId: this.getGameId(),
       playerName: this.getPlayerName()
