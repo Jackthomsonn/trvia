@@ -1,0 +1,36 @@
+.trvia-header {
+  background: linear-gradient(120deg, map-get($colors, 'primary'), map-get($colors, 'gradient'));
+  width: 100vw;
+  height: 130px;
+  border-radius: 100%;
+  margin: 0 -16px;
+  color: #FFF;
+  transform: scale(3);
+  text-align: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2em;
+  margin-bottom: 20vh;
+
+  & > .text {
+    font-size: 7px;
+    font-weight: 300;
+    width: 30vw;
+  }
+
+  & > .subText {
+    font-size: 6px;
+    font-weight: 700;
+    width: 30vw;
+    margin-top: 1.2em;
+  }
+
+  & > .waiting {
+    font-size: 6px;
+    font-weight: 300;
+    width: 30vw;
+    margin-top: 1.2em;
+  }
+}

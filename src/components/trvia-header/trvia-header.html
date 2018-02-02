@@ -1,0 +1,6 @@
+<div class="trvia-header">
+  <span class="text" *ngIf="!showAlternativeMessage">{{ text }}</span>
+  <span class="subText" *ngIf="!showAlternativeMessage">{{ subText }}</span>
+
+  <span class="waiting" *ngIf="showAlternativeMessage">Waiting for the host to start the game</span>
+</div>

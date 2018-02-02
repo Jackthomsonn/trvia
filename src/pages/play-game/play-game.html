@@ -1,0 +1,47 @@
+<ion-header no-border>
+  <ion-navbar></ion-navbar>
+</ion-header>
+
+<ion-content padding fullscreen="true">
+  <trvia-header></trvia-header>
+
+  <ion-grid>
+    <ion-list radio-group [(ngModel)]="answer">
+      <ion-item *ngFor="let answer of possibleAnswers">
+        <ion-label>{{ answer }}</ion-label>
+        <ion-radio (click)="answerQuestion(answer)" [disabled]="waitingForOtherPlayersMessage !== undefined"></ion-radio>
+      </ion-item>
+    </ion-list>
+
+    <p trvia-button *ngIf="waitingForOtherPlayersMessage">{{ waitingForOtherPlayersMessage }}</p>
+  </ion-grid>
+
+  <div class="countdown" *ngIf="shouldShowCountdown">
+    <p>{{ countdown }}</p>
+
+    <p>Remember, you only have 10 seconds to answer a question, so be quick!</p>
+  </div>
+
+  <div class="winner-container" *ngIf="shouldShowWinnerDialogue">
+    <h1>{{ didIWin ? 'You won' : 'You Lost' }}</h1>
+    <div class='winner'>
+      <div class="winner_header">
+        {{ playersScoreToShow }}
+      </div>
+      <div class="winner_body">
+        <div class="row">
+          <span>Bonus Points</span>
+          <span>20</span>
+        </div>
+        <div class="row">
+          <span>Points</span>
+          <span>150</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button trvia-button (click)="playAnotherGame()">Play another game</button>
+    </div>
+  </div>
+</ion-content>

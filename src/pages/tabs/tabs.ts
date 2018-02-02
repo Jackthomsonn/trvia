@@ -1,19 +1,15 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
-import { HomePage } from '../home/home';
+import { JoinGamePage } from '../join-game/join-game'
+import { LiveGamesPage } from './../live-games/live-games'
+import { CreateGamePage } from './../create-game/create-game'
 
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage {
 
-  tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
-
-  constructor() {
-
-  }
+export class TabsPage { 
+  public joinGameRoot = JoinGamePage
+  public liveGamesRoot = LiveGamesPage
+  public createGameRoot = CreateGamePage
 }

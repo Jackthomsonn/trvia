@@ -1,0 +1,31 @@
+page-live-games {
+
+  ion-content {
+
+    .game {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1em;
+
+      button {
+        background: linear-gradient(120deg, map-get($colors, 'primary'), map-get($colors, 'gradient'));
+        padding: 1em;
+        color: #FFF;
+        font-size: 12px;
+        border-radius: 90px;
+        text-align: center;
+      }
+
+      &--none {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10vh;
+        height: 10vh;
+        text-align: center;
+      }
+    }
+  }
+}

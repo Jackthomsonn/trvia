@@ -1,0 +1,14 @@
+<ion-content padding>
+  <trvia-header></trvia-header>
+
+  <ion-grid>
+    <ion-item>
+      <ion-label color="primary" stacked>Give yourself a nickname</ion-label>
+      <ion-input placeholder="Player name" [(ngModel)]="playerName" required></ion-input>
+    </ion-item>
+
+    <ion-col text-center>
+      <button trvia-button [disabled]="!playerName" (click)="getStarted()">Get started</button>
+    </ion-col>
+  </ion-grid>
+</ion-content>

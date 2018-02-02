@@ -1,0 +1,14 @@
+<ion-content padding>
+  <trvia-header></trvia-header>
+
+  <ion-grid>
+    <ion-item>
+      <ion-label color="primary" stacked>ID of game you wish to join</ion-label>
+      <ion-input placeholder="Game ID" [(ngModel)]="gameId" required></ion-input>
+    </ion-item>
+
+    <ion-col text-center>
+      <button trvia-button [disabled]="!gameId" (click)="joinGame()">Join Game</button>
+    </ion-col>
+  </ion-grid>
+</ion-content>
