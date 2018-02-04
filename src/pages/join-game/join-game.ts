@@ -41,7 +41,7 @@ export class JoinGamePage {
   public joinGame = () => {
     this.socketServiceProvider.emit('joinGame', {
       gameId: this.gameId,
-      playerName: this.player.name,
+      name: this.player.name,
       isHost: false
     })
   }

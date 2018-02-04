@@ -35,7 +35,7 @@ export class LiveGamesPage {
 
     this.socketServiceProvider.emit('joinGame', {
       gameId: gameId,
-      playerName: this.player.name,
+      name: this.player.name,
       isHost: false
     })
   }
