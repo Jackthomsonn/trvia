@@ -19,6 +19,7 @@ import { HeaderServiceProvider } from '../providers/header-service/header-servic
 import { ComponentsModule } from '../components/components.module'
 import { NativeStorage } from '@ionic-native/native-storage'
 import { PlayerServiceProvider } from '../providers/player-service/player-service'
+import { Keyboard } from '@ionic-native/keyboard';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { PlayerServiceProvider } from '../providers/player-service/player-servic
     BrowserModule,
     IonicModule.forRoot(Trvia, {
       tabsHideOnSubPages: true,
-      swipeBackEnabled: true
+      swipeBackEnabled: false
     }),
     HttpClientModule,
     ComponentsModule
@@ -58,7 +59,8 @@ import { PlayerServiceProvider } from '../providers/player-service/player-servic
     SocketServiceProvider,
     HeaderServiceProvider,
     NativeStorage,
-    PlayerServiceProvider
+    PlayerServiceProvider,
+    Keyboard
   ]
 })
 

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
-import { Alert } from 'ionic-angular/components/alert/alert'
+
+import { Keyboard } from '@ionic-native/keyboard'
+
+import { IPlayer } from './../../interfaces/IPlayer'
 
 import { ToastController } from 'ionic-angular/components/toast/toast-controller'
 import { Toast } from 'ionic-angular/components/toast/toast'
@@ -23,7 +26,7 @@ export class JoinGamePage {
   public gameId: string
 
   private toastInstance: Toast
-  private playerName: string
+  private player: IPlayer
 
   constructor(
     private navCtrl: NavController,
@@ -31,13 +34,14 @@ export class JoinGamePage {
     private headerServiceProvider: HeaderServiceProvider,
     private playerServiceProvider: PlayerServiceProvider,
     private toastCtrl: ToastController,
-    private platform: Platform) {
+    private platform: Platform,
+    private keyboard: Keyboard) {
   }
 
   public joinGame = () => {
     this.socketServiceProvider.emit('joinGame', {
       gameId: this.gameId,
-      playerName: this.playerName,
+      playerName: this.player.name,
       isHost: false
     })
   }
@@ -47,7 +51,7 @@ export class JoinGamePage {
       this.navCtrl.push(HostGamePage, {
         gameId: this.gameId,
         isHost: false,
-        playerName: this.playerName
+        playerName: this.player.name
       })
     })
 
@@ -89,20 +93,25 @@ export class JoinGamePage {
   }
 
   ionViewDidLoad() {
+    this.platform.ready().then(() => {
+      this.keyboard.hideKeyboardAccessoryBar(false)
+    })
     this.setupSocketEventListeners()
   }
 
   ionViewDidEnter() {
     this.platform.ready().then(() => {
-      this.playerName = this.playerServiceProvider.playerInformation.name
+      this.playerServiceProvider.getPlayerInformation().then((player: IPlayer) => {
+        this.player = player
 
-      this.headerServiceProvider.setup({
-        text: this.playerServiceProvider.playerInformation.name,
-        subText: 'Level ' + this.playerServiceProvider.playerInformation.level,
-        showAlternativeMessage: false
+        this.headerServiceProvider.setup({
+          text: this.player.name,
+          subText: 'Points ' + this.player.points,
+          showAlternativeMessage: false
+        })
+      }).catch(() => {
+        this.navCtrl.push(WelcomePage)
       })
-    }).catch(() => {
-      this.navCtrl.push(WelcomePage)
     })
   }
 }

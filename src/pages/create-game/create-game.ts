@@ -1,5 +1,10 @@
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
+import { Platform } from 'ionic-angular/platform/platform'
+
+import { Keyboard } from '@ionic-native/keyboard'
+
+import { IPlayer } from './../../interfaces/IPlayer'
 
 import { HostGamePage } from './../host-game/host-game'
 
@@ -17,34 +22,46 @@ export class CreateGamePage {
   public gameName: string
   public isPrivateGame: boolean
 
+  private player: IPlayer
+
   constructor(
     private socketServiceProvider: SocketServiceProvider,
     private headerServiceProvider: HeaderServiceProvider,
     private playerServiceProvider: PlayerServiceProvider,
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private platform: Platform,
+    private keyboard: Keyboard) {
   }
 
   public createGame() {
-      this.socketServiceProvider.emit('createGame', {
-        gameName: this.gameName,
-        isHost: true,
-        playerName: this.playerServiceProvider.playerInformation.name,
-        private: this.isPrivateGame
-      })
+    this.socketServiceProvider.emit('createGame', {
+      gameName: this.gameName,
+      isHost: true,
+      playerName: this.player.name,
+      private: this.isPrivateGame
+    })
   }
 
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('gameId', (gameId: string) => {
-        this.navCtrl.push(HostGamePage, {
-          gameId: gameId,
-          isHost: true,
-          playerName: this.playerServiceProvider.playerInformation.name
-        })
+      this.navCtrl.push(HostGamePage, {
+        gameId: gameId,
+        isHost: true,
+        playerName: this.player.name
+      })
     })
   }
 
   ionViewDidLoad() {
-    this.setupSocketEventListeners()
+    this.platform.ready().then(() => {
+      this.playerServiceProvider.getPlayerInformation().then(player => {
+        this.player = player
+      })
+
+      this.keyboard.hideKeyboardAccessoryBar(false)
+
+      this.setupSocketEventListeners()
+    })
   }
 
   ionViewDidEnter() {

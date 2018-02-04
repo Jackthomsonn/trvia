@@ -1,4 +1,3 @@
-import { IQuestion } from './../../interfaces/IQuestion';
 import { Component, ViewChild } from '@angular/core'
 import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular'
 

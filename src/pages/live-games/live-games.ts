@@ -1,6 +1,10 @@
-import { HostGamePage } from './../host-game/host-game';
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
+import { Platform } from 'ionic-angular/platform/platform'
+
+import { IPlayer } from './../../interfaces/IPlayer'
+
+import { HostGamePage } from './../host-game/host-game'
 
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
@@ -16,12 +20,14 @@ export class LiveGamesPage {
   public liveGames: Array<any>
 
   private gameToJoin: string
+  private player: IPlayer
 
   constructor(
     private navCtrl: NavController,
     private headerServiceProvider: HeaderServiceProvider,
     private socketServiceProvider: SocketServiceProvider,
-    private playerServiceProvider: PlayerServiceProvider) {
+    private playerServiceProvider: PlayerServiceProvider,
+    private platform: Platform) {
   }
 
   public joinGame = (gameId) => {
@@ -29,7 +35,7 @@ export class LiveGamesPage {
 
     this.socketServiceProvider.emit('joinGame', {
       gameId: gameId,
-      playerName: this.playerServiceProvider.playerInformation.name,
+      playerName: this.player.name,
       isHost: false
     })
   }
@@ -43,12 +49,20 @@ export class LiveGamesPage {
       this.navCtrl.push(HostGamePage, {
         gameId: this.gameToJoin,
         isHost: false,
-        playerName: this.playerServiceProvider.playerInformation.name
+        playerName: this.player.name
       })
     })
 
     this.socketServiceProvider.on('updateLiveGames', (games) => {
       this.liveGames = games.list
+    })
+  }
+
+  ionViewDidLoad() {
+    this.platform.ready().then(() => {
+      this.playerServiceProvider.getPlayerInformation().then((player: IPlayer) => {
+        this.player = player
+      })
     })
   }
 

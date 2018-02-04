@@ -1,5 +1,8 @@
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
+import { Platform } from 'ionic-angular/platform/platform'
+
+import { Keyboard } from '@ionic-native/keyboard'
 
 import { JoinGamePage } from './../join-game/join-game'
 
@@ -18,7 +21,9 @@ export class WelcomePage {
   constructor(
     private navCtrl: NavController,
     private headerServiceProvider: HeaderServiceProvider,
-    private playerServiceProvider: PlayerServiceProvider) {
+    private playerServiceProvider: PlayerServiceProvider,
+    private platform: Platform,
+    private keyboard: Keyboard) {
   }
 
   public getStarted() {
@@ -35,6 +40,10 @@ export class WelcomePage {
       text: 'Welcome',
       subText: 'Lets get you setup',
       showAlternativeMessage: undefined
+    })
+
+    this.platform.ready().then(() => {
+      this.keyboard.hideKeyboardAccessoryBar(false)
     })
   }
 }

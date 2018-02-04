@@ -6,7 +6,6 @@ import { IPlayer } from '../../interfaces/IPlayer'
 
 @Injectable()
 export class PlayerServiceProvider {
-  public playerInformation: IPlayer
 
   constructor(private nativeStorage: NativeStorage) { }
 

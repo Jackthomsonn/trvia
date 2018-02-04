@@ -76,10 +76,10 @@ export class PlayGamePage {
     }
   }
 
-  public countPlayersScore() {
+  public countPlayersScore(score: number) {
     this.shouldShowWinnerDialogue = true
 
-    const playersScore = 170
+    const playersScore = score
 
     const count = setInterval(() => {
       if (this.playersScoreToShow === playersScore - 1) {
@@ -195,10 +195,10 @@ export class PlayGamePage {
   }
 
   private setupSocketEventListeners() {
-    this.socketServiceProvider.on('theWinner', winner => {
+    this.socketServiceProvider.on('theWinner', (winner, playersScore: number) => {
       this.didPlayerWin(winner);
       this.shouldShowWinnerDialogue = true
-      this.countPlayersScore()
+      this.countPlayersScore(playersScore)
     })
 
     this.socketServiceProvider.on('everyoneAnswered', () => {
@@ -218,12 +218,15 @@ export class PlayGamePage {
     this.socketServiceProvider.on('reconnect', this.handleReconnection)
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.socketServiceProvider.socket.off('disconnect')
     this.socketServiceProvider.socket.off('reconnect')
+    this.socketServiceProvider.socket.off('everyoneAnswered')
 
     this.setupSocketEventListeners()
+  }
 
+  ionViewDidLoad() {
     this.setupProps()
 
     this.setupSplashScreen()
@@ -255,6 +258,8 @@ export class PlayGamePage {
           this.navCtrl.popToRoot()
         }
       }
+
+      clearTimeout(this.countDownInstance)
     })
 
     clearTimeout(this.countDownInstance)
