@@ -47,7 +47,7 @@ export class HostGamePage {
   }
 
   private getPlayerName() {
-    return this.navParams.data.playerName
+    return this.navParams.data.name
   }
 
   private handleDisconnection = (socket) => {
