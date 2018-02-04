@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular'
 
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
+import { PlayerServiceProvider } from './../../providers/player-service/player-service'
 
 import { ToastController } from 'ionic-angular/components/toast/toast-controller'
 import { Toast } from 'ionic-angular/components/toast/toast'
@@ -23,6 +24,7 @@ export class PlayGamePage {
   public shouldShowWinnerDialogue: boolean
   public playersScoreToShow: number = 0
   public didIWin: boolean
+  public playersScore: number
 
   private correctAnswer: string
   private countDownInstance
@@ -40,6 +42,7 @@ export class PlayGamePage {
     private navParams: NavParams,
     private socketServiceProvider: SocketServiceProvider,
     private headerServiceProvider: HeaderServiceProvider,
+    private playerServiceProvider: PlayerServiceProvider,
     private toastCtrl: ToastController) {
   }
 
@@ -59,7 +62,8 @@ export class PlayGamePage {
       if (this.isLastQuestion() && !this.shouldShowWinnerDialogue) {
         if (this.isTheHost()) {
           this.socketServiceProvider.emit('endOfGame', {
-            gameId: this.getGameId()
+            gameId: this.getGameId(),
+            playerName: this.getPlayerName()
           })
 
           return
@@ -71,13 +75,14 @@ export class PlayGamePage {
         this.possibleAnswers = this.questions[this.currentQuestionIndex].incorrect_answers
         this.possibleAnswers.push(this.correctAnswer)
 
-        this.possibleAnswers = new Set(this.possibleAnswers)
+        this.possibleAnswers = new Set(this.shuffle(this.possibleAnswers))
       }
     }
   }
 
   public countPlayersScore(score: number) {
     this.shouldShowWinnerDialogue = true
+    this.playersScore = score
 
     const playersScore = score
 
@@ -86,7 +91,16 @@ export class PlayGamePage {
         clearInterval(count)
       }
       this.playersScoreToShow++
-    }, 10)
+    }, 5)
+
+    this.playerServiceProvider.getPlayerInformation().then(player => {
+      console.log('Update score')
+      this.playerServiceProvider.setPlayerInformation({
+        name: player.name,
+        level: 0,
+        points: (player.points + score)
+      })
+    })
   }
 
   public playAnotherGame() {
@@ -98,6 +112,15 @@ export class PlayGamePage {
     var e = document.createElement('div');
     e.innerHTML = str;
     return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+  }
+
+  private shuffle(possibleAnswers) {
+    for (let i = possibleAnswers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [possibleAnswers[i], possibleAnswers[j]] = [possibleAnswers[j], possibleAnswers[i]]
+    }
+    return possibleAnswers
   }
 
   private getGameId() {
@@ -195,10 +218,13 @@ export class PlayGamePage {
   }
 
   private setupSocketEventListeners() {
-    this.socketServiceProvider.on('theWinner', (winner, playersScore: number) => {
+    this.socketServiceProvider.on('theWinner', winner => {
       this.didPlayerWin(winner);
       this.shouldShowWinnerDialogue = true
-      this.countPlayersScore(playersScore)
+    })
+
+    this.socketServiceProvider.on('getPlayersScore', player => {
+      this.countPlayersScore(player.score)
     })
 
     this.socketServiceProvider.on('everyoneAnswered', () => {
