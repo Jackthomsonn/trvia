@@ -1,12 +1,16 @@
 import { Component, ViewChild } from '@angular/core'
 import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular'
+import { Haptic } from 'ionic-angular/tap-click/haptic'
+
+import { ToastController } from 'ionic-angular/components/toast/toast-controller'
+import { Toast } from 'ionic-angular/components/toast/toast'
+
+import { IPlayer } from './../../interfaces/IPlayer'
 
 import { PlayGamePage } from './../play-game/play-game'
 
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
-import { ToastController } from 'ionic-angular/components/toast/toast-controller'
-import { Toast } from 'ionic-angular/components/toast/toast'
 
 @IonicPage()
 @Component({
@@ -15,7 +19,7 @@ import { Toast } from 'ionic-angular/components/toast/toast'
 })
 
 export class HostGamePage {
-  public players: Array<any> = []
+  public players: Array<IPlayer> = []
 
   private toastInstance: Toast
   private disconnectionToast: Toast
@@ -27,10 +31,15 @@ export class HostGamePage {
     private navParams: NavParams,
     private socketServiceProvider: SocketServiceProvider,
     private headerServiceProvider: HeaderServiceProvider,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private haptic: Haptic) {
   }
 
   public startGame = () => {
+    if (this.haptic.available()) {
+      this.haptic.impact({ style: 'heavy' })
+    }
+
     this.socketServiceProvider.emit('startGame', { gameId: this.getGameId() })
   }
 
@@ -134,10 +143,12 @@ export class HostGamePage {
   }
 
   ionViewDidEnter() {
-    this.socketServiceProvider.socket.off('startTheGame')
-    this.socketServiceProvider.socket.off('hostLeft')
-    this.socketServiceProvider.socket.off('disconnect')
-    this.socketServiceProvider.socket.off('reconnect')
+    this.socketServiceProvider.off([
+      'startTheGame',
+      'hostLeft',
+      'disconnect',
+      'reconnect'
+    ])
 
     this.setupSocketEventListeners()
 

@@ -11,6 +11,21 @@ export class SocketServiceProvider {
     this.connectClientSocket()
   }
 
+  public emit(event: string, data?: any) {
+    this.socket.emit(event, data)
+  }
+
+  public on(event: string, callback: Function) {
+    this.socket.on(event, callback)
+  }
+
+  public off(events: Array<string>) {
+    if(!events) {
+      return
+    }
+    events.forEach(event => this.socket.off(event))
+  }
+
   private connectClientSocket() {
     this.socket = io.connect(this.socketUri, {
       reconnection: true,
@@ -18,13 +33,5 @@ export class SocketServiceProvider {
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000
     })
-  }
-
-  public emit(event: string, data?: any) {
-    this.socket.emit(event, data)
-  }
-
-  public on(event: string, callback: Function) {
-    this.socket.on(event, callback)
   }
 }

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { IHeader } from '../../interfaces/IHeader';
+import { Injectable } from '@angular/core'
+import { Subject } from 'rxjs/Subject'
+
+import { IHeader } from '../../interfaces/IHeader'
 
 @Injectable()
 export class HeaderServiceProvider {

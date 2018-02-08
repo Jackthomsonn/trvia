@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
+import { Haptic } from 'ionic-angular/tap-click/haptic'
 
 import { Keyboard } from '@ionic-native/keyboard'
 
@@ -16,6 +17,9 @@ import { SocketServiceProvider } from './../../providers/socket-service/socket-s
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 import { PlayerServiceProvider } from './../../providers/player-service/player-service'
 
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
+import { Loading } from 'ionic-angular/components/loading/loading'
+
 @IonicPage()
 @Component({
   selector: 'page-join-game',
@@ -27,6 +31,7 @@ export class JoinGamePage {
 
   private toastInstance: Toast
   private player: IPlayer
+  private loadingInstance: Loading
 
   constructor(
     private navCtrl: NavController,
@@ -35,10 +40,18 @@ export class JoinGamePage {
     private playerServiceProvider: PlayerServiceProvider,
     private toastCtrl: ToastController,
     private platform: Platform,
-    private keyboard: Keyboard) {
+    private keyboard: Keyboard,
+    private loadingCtrl: LoadingController,
+    private haptic: Haptic) {
   }
 
   public joinGame = () => {
+    if (this.haptic.available()) {
+      this.haptic.impact({ style: 'heavy' })
+    }
+
+    this.loadingInstance.present()
+
     this.socketServiceProvider.emit('joinGame', {
       gameId: this.gameId,
       playerName: this.player.name,
@@ -48,6 +61,8 @@ export class JoinGamePage {
 
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('joinedGame', () => {
+      this.loadingInstance.dismiss()
+
       this.navCtrl.push(HostGamePage, {
         gameId: this.gameId,
         isHost: false,
@@ -56,6 +71,13 @@ export class JoinGamePage {
     })
 
     this.socketServiceProvider.on('gameDoesNotExist', () => {
+      this.loadingInstance.dismiss()
+
+      this.loadingInstance = this.loadingCtrl.create({
+        content: 'Joining game...',
+        spinner: 'crescent'
+      })
+
       if (this.toastInstance) {
         return
       }
@@ -96,10 +118,17 @@ export class JoinGamePage {
     this.platform.ready().then(() => {
       this.keyboard.hideKeyboardAccessoryBar(false)
     })
-    this.setupSocketEventListeners()
   }
 
   ionViewDidEnter() {
+    this.socketServiceProvider.off([
+      'joinedGame',
+      'gameDoesNotExist',
+      'gameHasStarted'
+    ])
+
+    this.setupSocketEventListeners()
+
     this.platform.ready().then(() => {
       this.playerServiceProvider.getPlayerInformation().then((player: IPlayer) => {
         this.player = player
@@ -112,6 +141,11 @@ export class JoinGamePage {
       }).catch(() => {
         this.navCtrl.push(WelcomePage)
       })
+    })
+
+    this.loadingInstance = this.loadingCtrl.create({
+      content: 'Joining gameefeqefefeq...',
+      spinner: 'crescent'
     })
   }
 }

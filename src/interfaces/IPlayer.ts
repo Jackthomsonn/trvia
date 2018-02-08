@@ -1,5 +1,5 @@
 export interface IPlayer {
   name: string
-  level: number
-  points: number
+  level?: number
+  points?: number
 }

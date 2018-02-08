@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
+import { Haptic } from 'ionic-angular/tap-click/haptic'
 
 import { Keyboard } from '@ionic-native/keyboard'
 
@@ -23,10 +24,15 @@ export class WelcomePage {
     private headerServiceProvider: HeaderServiceProvider,
     private playerServiceProvider: PlayerServiceProvider,
     private platform: Platform,
-    private keyboard: Keyboard) {
+    private keyboard: Keyboard,
+    private haptic: Haptic) {
   }
 
   public getStarted() {
+    if (this.haptic.available()) {
+      this.haptic.impact({ style: 'heavy' })
+    }
+
     this.playerServiceProvider.setPlayerInformation({
       name: this.playerName,
       level: 1,

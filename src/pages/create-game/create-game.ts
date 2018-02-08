@@ -12,6 +12,9 @@ import { SocketServiceProvider } from '../../providers/socket-service/socket-ser
 import { HeaderServiceProvider } from '../../providers/header-service/header-service'
 import { PlayerServiceProvider } from './../../providers/player-service/player-service'
 
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
+import { Loading } from 'ionic-angular/components/loading/loading'
+
 @IonicPage()
 @Component({
   selector: 'page-create-game',
@@ -23,6 +26,7 @@ export class CreateGamePage {
   public isPrivateGame: boolean
 
   private player: IPlayer
+  private loadingInstance: Loading
 
   constructor(
     private socketServiceProvider: SocketServiceProvider,
@@ -30,10 +34,13 @@ export class CreateGamePage {
     private playerServiceProvider: PlayerServiceProvider,
     private navCtrl: NavController,
     private platform: Platform,
-    private keyboard: Keyboard) {
+    private keyboard: Keyboard,
+    private loadingCtrl: LoadingController) {
   }
 
   public createGame() {
+    this.loadingInstance.present()
+
     this.socketServiceProvider.emit('createGame', {
       gameName: this.gameName,
       isHost: true,
@@ -44,6 +51,8 @@ export class CreateGamePage {
 
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('gameId', (gameId: string) => {
+      this.loadingInstance.dismiss()
+
       this.navCtrl.push(HostGamePage, {
         gameId: gameId,
         isHost: true,
@@ -59,16 +68,23 @@ export class CreateGamePage {
       })
 
       this.keyboard.hideKeyboardAccessoryBar(false)
-
-      this.setupSocketEventListeners()
     })
   }
 
   ionViewDidEnter() {
+    this.socketServiceProvider.off(['gameId'])
+
+    this.setupSocketEventListeners()
+
     this.headerServiceProvider.setup({
       text: 'Create your own game',
       subText: undefined,
       showAlternativeMessage: false
+    })
+
+    this.loadingInstance = this.loadingCtrl.create({
+      content: 'Creating game...',
+      spinner: 'crescent'
     })
   }
 }

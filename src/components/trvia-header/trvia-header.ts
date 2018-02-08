@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { HeaderServiceProvider } from './../../providers/header-service/header-service';
+
+import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 
 
 @Component({

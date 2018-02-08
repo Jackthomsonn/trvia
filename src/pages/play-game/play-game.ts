@@ -12,7 +12,7 @@ import { Toast } from 'ionic-angular/components/toast/toast'
 @IonicPage()
 @Component({
   selector: 'page-play-game',
-  templateUrl: 'play-game.html',
+  templateUrl: 'play-game.html'
 })
 
 export class PlayGamePage {
@@ -94,7 +94,6 @@ export class PlayGamePage {
     }, 5)
 
     this.playerServiceProvider.getPlayerInformation().then(player => {
-      console.log('Update score')
       this.playerServiceProvider.setPlayerInformation({
         name: player.name,
         level: 0,
@@ -245,9 +244,11 @@ export class PlayGamePage {
   }
 
   ionViewDidEnter() {
-    this.socketServiceProvider.socket.off('disconnect')
-    this.socketServiceProvider.socket.off('reconnect')
-    this.socketServiceProvider.socket.off('everyoneAnswered')
+    this.socketServiceProvider.off([
+      'disconnect',
+      'reconnect',
+      'everyoneAnswered'
+    ])
 
     this.setupSocketEventListeners()
   }
