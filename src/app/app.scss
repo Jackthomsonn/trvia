@@ -16,12 +16,19 @@
 }
 
 [trvia-button] {
-  background: linear-gradient(120deg, map-get($colors, 'primary'), map-get($colors, 'gradient'));
-  padding: 1em;
-  color: #FFF;
-  font-size: 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  background: linear-gradient(map-get($colors, 'primary'), map-get($colors, 'gradient'));
+  text-transform: capitalize;
+  box-shadow: 0 4px 30px lighten(map-get($colors, 'gradient'), 24%);
+  padding: 1em 2em;
   margin-top: 2em;
-  border-radius: 90px;
-  width: 100%;
-  text-align: center;
+  width: 270px;
+  height: 60px;
+
+  &.small {
+    height: 40px;
+    width: 100px;
+  }
 }

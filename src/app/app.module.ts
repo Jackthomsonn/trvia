@@ -36,7 +36,8 @@ import { Keyboard } from '@ionic-native/keyboard';
     BrowserModule,
     IonicModule.forRoot(Trvia, {
       tabsHideOnSubPages: true,
-      swipeBackEnabled: false
+      swipeBackEnabled: false,
+      mode: 'md'
     }),
     HttpClientModule,
     ComponentsModule

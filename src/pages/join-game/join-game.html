@@ -8,7 +8,10 @@
     </ion-item>
 
     <ion-col text-center>
-      <button trvia-button [disabled]="!gameId" (click)="joinGame()">Join Game</button>
+      <button ion-button icon-end trvia-button [disabled]="!gameId" (click)="joinGame()">
+        Join Game
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
     </ion-col>
   </ion-grid>
 </ion-content>

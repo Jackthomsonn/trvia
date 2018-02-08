@@ -14,7 +14,10 @@
     </ion-item>
 
     <ion-col text-center>
-      <button trvia-button [disabled]="!gameName" (click)="createGame()">Create Game</button>
+      <button ion-button icon-end trvia-button [disabled]="!gameName" (click)="createGame()">
+        Create Game
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
     </ion-col>
   </ion-grid>
 </ion-content>

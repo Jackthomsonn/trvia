@@ -5,7 +5,7 @@
   <ion-grid>
     <div class="game" *ngFor="let game of liveGames">
       {{ game.gameName }}
-      <button (click)="joinGame(game.gameId)" *ngIf="game.gameName">Join game</button>
+      <button ion-button trvia-button class="small" (click)="joinGame(game.gameId)" *ngIf="game.gameName">Join game</button>
     </div>
 
     <div class="game--none" *ngIf="!liveGames || liveGames && liveGames.length === 0">
