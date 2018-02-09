@@ -56,8 +56,6 @@ export class LiveGamesPage {
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('listOfLiveGames', games => {
       this.liveGames = games.list
-
-      console.log(this.liveGames)
     })
 
     this.socketServiceProvider.on('joinedGame', () => {
