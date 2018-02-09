@@ -56,6 +56,8 @@ export class LiveGamesPage {
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('listOfLiveGames', games => {
       this.liveGames = games.list
+
+      console.log(this.liveGames)
     })
 
     this.socketServiceProvider.on('joinedGame', () => {
@@ -82,7 +84,12 @@ export class LiveGamesPage {
   }
 
   ionViewDidEnter() {
-    this.socketServiceProvider.off(['joinedGame'])
+    this.socketServiceProvider.off([
+      'joinedGame',
+      'getLiveGames',
+      'listOfLiveGames',
+      'updateLiveGames'
+    ])
 
     this.setupSocketEventListeners()
 

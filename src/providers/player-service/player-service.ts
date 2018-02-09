@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core'
 
-import { NativeStorage } from '@ionic-native/native-storage'
+import { Storage } from '@ionic/storage'
 
 import { IPlayer } from '../../interfaces/IPlayer'
 
 @Injectable()
 export class PlayerServiceProvider {
 
-  constructor(private nativeStorage: NativeStorage) { }
+  constructor(private storage: Storage) { }
 
   public getPlayerInformation(): Promise<IPlayer> {
-    return this.nativeStorage.getItem('playerInformation')
+    return this.storage.get('playerInformation')
   }
 
   public setPlayerInformation(playerInformation: IPlayer) {
-    this.nativeStorage.setItem('playerInformation', playerInformation)
+    this.storage.set('playerInformation', playerInformation)
   }
 
   public removePlayerInformation() {
-    this.nativeStorage.remove('playerInformation')
+    this.storage.remove('playerInformation')
   }
 }

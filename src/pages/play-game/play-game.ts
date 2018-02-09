@@ -60,14 +60,14 @@ export class PlayGamePage {
   public showQuestion() {
     if (this.questionsExist()) {
       if (this.isLastQuestion() && !this.shouldShowWinnerDialogue) {
-        if (this.isTheHost()) {
-          this.socketServiceProvider.emit('endOfGame', {
-            gameId: this.getGameId(),
-            playerName: this.getPlayerName()
+        if(this.isTheHost()) {
+          this.socketServiceProvider.emit('getTheOverallWinner', {
+            gameId: this.getGameId()
           })
-
-          return
         }
+        this.socketServiceProvider.emit('endOfGame', {
+          gameId: this.getGameId()
+        })
       } else if (!this.isLastQuestion()) {
         this.correctAnswer = this.decode(this.questions[this.currentQuestionIndex].correct_answer)
         this.currentQuestion = this.decode(this.questions[this.currentQuestionIndex].question)
@@ -81,13 +81,15 @@ export class PlayGamePage {
   }
 
   public countPlayersScore(score: number) {
+    if (score === 0) {
+      return
+    }
+
     this.shouldShowWinnerDialogue = true
     this.playersScore = score
 
-    const playersScore = score
-
     const count = setInterval(() => {
-      if (this.playersScoreToShow === playersScore - 1) {
+      if (this.playersScoreToShow === this.playersScore - 1) {
         clearInterval(count)
       }
       this.playersScoreToShow++
@@ -218,7 +220,7 @@ export class PlayGamePage {
 
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('theWinner', winner => {
-      this.didPlayerWin(winner);
+      this.didPlayerWin(winner)
       this.shouldShowWinnerDialogue = true
     })
 

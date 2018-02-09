@@ -6,6 +6,7 @@ import { SocketServiceProvider } from './../providers/socket-service/socket-serv
 import { JoinGamePage } from './../pages/join-game/join-game'
 import { NgModule, ErrorHandler } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
+import { IonicStorageModule } from '@ionic/storage'
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular'
 import { Trvia } from './app.component'
 
@@ -17,7 +18,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { CreateGamePage } from '../pages/create-game/create-game'
 import { HeaderServiceProvider } from '../providers/header-service/header-service'
 import { ComponentsModule } from '../components/components.module'
-import { NativeStorage } from '@ionic-native/native-storage'
 import { PlayerServiceProvider } from '../providers/player-service/player-service'
 import { Keyboard } from '@ionic-native/keyboard';
 
@@ -39,6 +39,7 @@ import { Keyboard } from '@ionic-native/keyboard';
       swipeBackEnabled: false,
       mode: 'md'
     }),
+    IonicStorageModule.forRoot(),
     HttpClientModule,
     ComponentsModule
   ],
@@ -59,7 +60,6 @@ import { Keyboard } from '@ionic-native/keyboard';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     SocketServiceProvider,
     HeaderServiceProvider,
-    NativeStorage,
     PlayerServiceProvider,
     Keyboard
   ]
