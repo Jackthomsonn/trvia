@@ -24,6 +24,9 @@ import { Loading } from 'ionic-angular/components/loading/loading'
 export class CreateGamePage {
   public gameName: string
   public isPrivateGame: boolean
+  public difficulty: string
+  public quizType: string
+  public amount: number
 
   private player: IPlayer
   private loadingInstance: Loading
@@ -45,7 +48,9 @@ export class CreateGamePage {
       gameName: this.gameName,
       isHost: true,
       playerName: this.player.name,
-      private: this.isPrivateGame
+      private: this.isPrivateGame,
+      difficulty: this.difficulty,
+      amount: this.amount
     })
   }
 

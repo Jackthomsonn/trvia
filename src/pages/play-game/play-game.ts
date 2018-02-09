@@ -1,6 +1,7 @@
-import { IQuestion } from './../../interfaces/IQuestion';
 import { Component, ViewChild } from '@angular/core'
-import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular'
+import { IonicPage, NavController, NavParams, Navbar, AlertController } from 'ionic-angular'
+
+import { IQuestion } from './../../interfaces/IQuestion'
 
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
@@ -43,7 +44,8 @@ export class PlayGamePage {
     private socketServiceProvider: SocketServiceProvider,
     private headerServiceProvider: HeaderServiceProvider,
     private playerServiceProvider: PlayerServiceProvider,
-    private toastCtrl: ToastController) {
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController) {
   }
 
   public answerQuestion(answer) {
@@ -60,7 +62,7 @@ export class PlayGamePage {
   public showQuestion() {
     if (this.questionsExist()) {
       if (this.isLastQuestion() && !this.shouldShowWinnerDialogue) {
-        if(this.isTheHost()) {
+        if (this.isTheHost()) {
           this.socketServiceProvider.emit('getTheOverallWinner', {
             gameId: this.getGameId()
           })
@@ -292,5 +294,28 @@ export class PlayGamePage {
     })
 
     clearTimeout(this.countDownInstance)
+  }
+
+  ionViewCanLeave() {
+    if (this.isTheHost()) {
+      return new Promise((resolve, reject) => {
+        let confirm = this.alertCtrl.create({
+          title: 'Are you sure you want to leave the game?',
+          message: 'Doing so will result in all players being removed',
+          buttons: [{
+            text: 'Leave game',
+            handler: () => {
+              resolve();
+            },
+          }, {
+            text: 'Cancel',
+            handler: () => {
+              reject();
+            }
+          }],
+        });
+        confirm.present();
+      })
+    }
   }
 }
