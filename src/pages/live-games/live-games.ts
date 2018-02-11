@@ -53,6 +53,10 @@ export class LiveGamesPage {
     })
   }
 
+  public noLiveGamesPresent() {
+    return !this.liveGames || this.liveGames && this.liveGames.length === 0
+  }
+
   private setupSocketEventListeners() {
     this.socketServiceProvider.on('listOfLiveGames', games => {
       this.liveGames = games.list

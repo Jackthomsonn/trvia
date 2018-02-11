@@ -1,14 +1,16 @@
 import { Component } from '@angular/core'
+
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
 import { Haptic } from 'ionic-angular/tap-click/haptic'
+import { ToastController } from 'ionic-angular/components/toast/toast-controller'
+import { Toast } from 'ionic-angular/components/toast/toast'
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
+import { Loading } from 'ionic-angular/components/loading/loading'
 
 import { Keyboard } from '@ionic-native/keyboard'
 
 import { IPlayer } from './../../interfaces/IPlayer'
-
-import { ToastController } from 'ionic-angular/components/toast/toast-controller'
-import { Toast } from 'ionic-angular/components/toast/toast'
 
 import { HostGamePage } from './../host-game/host-game'
 import { WelcomePage } from '../welcome/welcome'
@@ -16,9 +18,6 @@ import { WelcomePage } from '../welcome/welcome'
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 import { PlayerServiceProvider } from './../../providers/player-service/player-service'
-
-import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
-import { Loading } from 'ionic-angular/components/loading/loading'
 
 @IonicPage()
 @Component({
@@ -85,7 +84,7 @@ export class JoinGamePage {
       this.toastInstance = this.toastCtrl.create({
         message: 'That game does not exist',
         showCloseButton: true,
-        duration: 5000
+        duration: 3000
       })
 
       this.toastInstance.onDidDismiss(() => {
@@ -103,7 +102,7 @@ export class JoinGamePage {
       this.toastInstance = this.toastCtrl.create({
         message: 'That game has already started',
         showCloseButton: true,
-        duration: 5000
+        duration: 3000
       })
 
       this.toastInstance.onDidDismiss(() => {
@@ -144,7 +143,7 @@ export class JoinGamePage {
     })
 
     this.loadingInstance = this.loadingCtrl.create({
-      content: 'Joining gameefeqefefeq...',
+      content: 'Joining game...',
       spinner: 'crescent'
     })
   }

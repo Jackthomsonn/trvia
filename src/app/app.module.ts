@@ -19,7 +19,7 @@ import { CreateGamePage } from '../pages/create-game/create-game'
 import { HeaderServiceProvider } from '../providers/header-service/header-service'
 import { ComponentsModule } from '../components/components.module'
 import { PlayerServiceProvider } from '../providers/player-service/player-service'
-import { Keyboard } from '@ionic-native/keyboard';
+import { Keyboard } from '@ionic-native/keyboard'
 
 @NgModule({
   declarations: [

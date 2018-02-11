@@ -1,7 +1,7 @@
 .trvia-header {
   background: linear-gradient(120deg, map-get($colors, 'primary'), map-get($colors, 'gradient'));
   width: 100vw;
-  height: 100px;
+  height: calc(50px + 10vh);
   border-radius: 100%;
   margin: 0 -16px;
   color: #FFF;

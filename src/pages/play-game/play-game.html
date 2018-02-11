@@ -13,7 +13,9 @@
       </ion-item>
     </ion-list>
 
-    <p ion-button full trvia-button *ngIf="waitingForOtherPlayersMessage">{{ waitingForOtherPlayersMessage }}</p>
+    <div class="button-container">
+      <button ion-button full trvia-button *ngIf="waitingForOtherPlayersMessage">{{ waitingForOtherPlayersMessage }}</button>
+    </div>
   </ion-grid>
 
   <div class="countdown" *ngIf="shouldShowCountdown">
@@ -40,4 +42,5 @@
       <button ion-button full trvia-button (click)="playAnotherGame()">Play another game</button>
     </div>
   </div>
+
 </ion-content>

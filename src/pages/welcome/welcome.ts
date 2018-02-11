@@ -1,4 +1,5 @@
 import { Component } from '@angular/core'
+
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
 import { Haptic } from 'ionic-angular/tap-click/haptic'
@@ -38,6 +39,7 @@ export class WelcomePage {
       level: 1,
       points: 0
     })
+
     this.navCtrl.setRoot(JoinGamePage)
   }
 

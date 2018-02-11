@@ -1,19 +1,21 @@
 import { Component } from '@angular/core'
+
 import { IonicPage, NavController } from 'ionic-angular'
 import { Platform } from 'ionic-angular/platform/platform'
+import { Haptic } from 'ionic-angular/tap-click/haptic'
+import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
+import { Loading } from 'ionic-angular/components/loading/loading'
 
 import { Keyboard } from '@ionic-native/keyboard'
 
 import { IPlayer } from './../../interfaces/IPlayer'
+import { IGame } from './../../interfaces/IGame'
 
 import { HostGamePage } from './../host-game/host-game'
 
 import { SocketServiceProvider } from '../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from '../../providers/header-service/header-service'
 import { PlayerServiceProvider } from './../../providers/player-service/player-service'
-
-import { LoadingController } from 'ionic-angular/components/loading/loading-controller'
-import { Loading } from 'ionic-angular/components/loading/loading'
 
 @IonicPage()
 @Component({
@@ -22,11 +24,7 @@ import { Loading } from 'ionic-angular/components/loading/loading'
 })
 
 export class CreateGamePage {
-  public gameName: string
-  public isPrivateGame: boolean
-  public difficulty: string
-  public quizType: string
-  public amount: number
+  public game: IGame
 
   private player: IPlayer
   private loadingInstance: Loading
@@ -38,20 +36,30 @@ export class CreateGamePage {
     private navCtrl: NavController,
     private platform: Platform,
     private keyboard: Keyboard,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private haptic: Haptic) {
+    this.setupProps()
   }
 
   public createGame() {
+    if (this.haptic.available()) {
+      this.haptic.impact({ style: 'heavy' })
+    }
+
     this.loadingInstance.present()
 
     this.socketServiceProvider.emit('createGame', {
-      gameName: this.gameName,
+      gameName: this.game.name,
       isHost: true,
       playerName: this.player.name,
-      private: this.isPrivateGame,
-      difficulty: this.difficulty,
-      amount: this.amount
+      private: this.game.private,
+      difficulty: this.game.difficulty,
+      amount: this.game.amountOfQuestions
     })
+  }
+
+  public formIsComplete() {
+    return !this.game.name || !this.game.amountOfQuestions || !this.game.difficulty
   }
 
   private setupSocketEventListeners() {
@@ -64,6 +72,15 @@ export class CreateGamePage {
         playerName: this.player.name
       })
     })
+  }
+
+  private setupProps() {
+    this.game = {
+      name: undefined,
+      amountOfQuestions: 10,
+      difficulty: 'easy',
+      private: false
+    }
   }
 
   ionViewDidLoad() {
@@ -81,15 +98,15 @@ export class CreateGamePage {
 
     this.setupSocketEventListeners()
 
+    this.loadingInstance = this.loadingCtrl.create({
+      content: 'Creating game...',
+      spinner: 'crescent'
+    })
+
     this.headerServiceProvider.setup({
       text: 'Create your own game',
       subText: undefined,
       showAlternativeMessage: false
-    })
-
-    this.loadingInstance = this.loadingCtrl.create({
-      content: 'Creating game...',
-      spinner: 'crescent'
     })
   }
 }

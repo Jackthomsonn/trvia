@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 
-
 @Component({
   selector: 'trvia-header',
   templateUrl: 'trvia-header.html'

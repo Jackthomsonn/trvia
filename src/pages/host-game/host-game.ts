@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core'
+
 import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular'
 import { Haptic } from 'ionic-angular/tap-click/haptic'
 
@@ -19,7 +20,7 @@ import { HeaderServiceProvider } from './../../providers/header-service/header-s
 })
 
 export class HostGamePage {
-  public players: Array<IPlayer> = []
+  public players: Array<IPlayer>
 
   private toastInstance: Toast
   private disconnectionToast: Toast
@@ -33,6 +34,7 @@ export class HostGamePage {
     private headerServiceProvider: HeaderServiceProvider,
     private toastCtrl: ToastController,
     private haptic: Haptic) {
+      this.setupProps()
   }
 
   public startGame = () => {
@@ -45,6 +47,10 @@ export class HostGamePage {
 
   public isTheHost() {
     return this.navParams.data.isHost
+  }
+
+  public readyToStart() {
+    return this.players.length < 2
   }
 
   private getPlayers() {
@@ -73,7 +79,7 @@ export class HostGamePage {
     this.disconnectionToast.dismiss().then(() => {
       this.toastCtrl.create({
         message: 'Reconnected successfully',
-        duration: 2000
+        duration: 3000
       }).present()
     })
   }
@@ -113,7 +119,7 @@ export class HostGamePage {
           this.toastInstance = this.toastCtrl.create({
             message: 'The host left the game',
             showCloseButton: true,
-            duration: 5000
+            duration: 3000
           })
 
           this.toastInstance.onDidDismiss(() => {
@@ -130,6 +136,10 @@ export class HostGamePage {
     this.socketServiceProvider.on('disconnect', this.handleDisconnection)
 
     this.socketServiceProvider.on('reconnect', this.handleReconnection)
+  }
+
+  private setupProps() {
+    this.players = []
   }
 
   ionViewDidLoad() {

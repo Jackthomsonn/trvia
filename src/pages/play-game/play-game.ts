@@ -1,14 +1,14 @@
 import { Component, ViewChild } from '@angular/core'
+
 import { IonicPage, NavController, NavParams, Navbar, AlertController } from 'ionic-angular'
+import { ToastController } from 'ionic-angular/components/toast/toast-controller'
+import { Toast } from 'ionic-angular/components/toast/toast'
 
 import { IQuestion } from './../../interfaces/IQuestion'
 
 import { SocketServiceProvider } from './../../providers/socket-service/socket-service'
 import { HeaderServiceProvider } from './../../providers/header-service/header-service'
 import { PlayerServiceProvider } from './../../providers/player-service/player-service'
-
-import { ToastController } from 'ionic-angular/components/toast/toast-controller'
-import { Toast } from 'ionic-angular/components/toast/toast'
 
 @IonicPage()
 @Component({
@@ -17,13 +17,13 @@ import { Toast } from 'ionic-angular/components/toast/toast'
 })
 
 export class PlayGamePage {
-  public possibleAnswers: any
+  public possibleAnswers: Set<string>
   public answer: boolean
   public countdown: number
   public shouldShowCountdown: boolean
   public waitingForOtherPlayersMessage: string
   public shouldShowWinnerDialogue: boolean
-  public playersScoreToShow: number = 0
+  public playersScoreToShow: number
   public didIWin: boolean
   public playersScore: number
 
@@ -32,6 +32,7 @@ export class PlayGamePage {
   private currentQuestion: string
   private questions: Array<IQuestion>
   private currentQuestionIndex: number
+  private levelUpScore: number
   private toastInstance: Toast
 
   private disconnectionToast: Toast
@@ -54,12 +55,12 @@ export class PlayGamePage {
       gameId: this.getGameId()
     })
 
-    this.clearAnswer()
-
     this.waitingForOtherPlayersMessage = 'Waiting for other players..'
   }
 
   public showQuestion() {
+    this.clearAnswer()
+
     if (this.questionsExist()) {
       if (this.isLastQuestion() && !this.shouldShowWinnerDialogue) {
         if (this.isTheHost()) {
@@ -74,10 +75,10 @@ export class PlayGamePage {
         this.correctAnswer = this.decode(this.questions[this.currentQuestionIndex].correct_answer)
         this.currentQuestion = this.decode(this.questions[this.currentQuestionIndex].question)
 
-        this.possibleAnswers = this.questions[this.currentQuestionIndex].incorrect_answers
-        this.possibleAnswers.push(this.correctAnswer)
+        let possibleAnswers = this.questions[this.currentQuestionIndex].incorrect_answers
+        possibleAnswers.push(this.correctAnswer)
 
-        this.possibleAnswers = new Set(this.shuffle(this.possibleAnswers))
+        this.possibleAnswers = new Set(this.shuffle(possibleAnswers))
       }
     }
   }
@@ -95,12 +96,12 @@ export class PlayGamePage {
         clearInterval(count)
       }
       this.playersScoreToShow++
-    }, 5)
+    }, 1)
 
     this.playerServiceProvider.getPlayerInformation().then(player => {
       this.playerServiceProvider.setPlayerInformation({
         name: player.name,
-        level: 0,
+        level: player.points % this.levelUpScore === 0 ? player.level + 1: player.level,
         points: (player.points + score)
       })
     })
@@ -176,6 +177,8 @@ export class PlayGamePage {
     this.countdown = 3
     this.shouldShowCountdown = true
     this.currentQuestionIndex = 0
+    this.playersScoreToShow = 0
+    this.levelUpScore = 1000
   }
 
   private setupSplashScreen() {
@@ -215,7 +218,7 @@ export class PlayGamePage {
     this.disconnectionToast.dismiss().then(() => {
       this.toastCtrl.create({
         message: 'Reconnected successfully',
-        duration: 2000
+        duration: 3000
       }).present()
     })
   }
@@ -277,7 +280,7 @@ export class PlayGamePage {
           this.toastInstance = this.toastCtrl.create({
             message: 'The host left the game',
             showCloseButton: true,
-            duration: 5000
+            duration: 3000
           })
 
           this.toastInstance.onDidDismiss(() => {
@@ -297,7 +300,7 @@ export class PlayGamePage {
   }
 
   ionViewCanLeave() {
-    if (this.isTheHost()) {
+    if (this.isTheHost() && !this.isLastQuestion()) {
       return new Promise((resolve, reject) => {
         let confirm = this.alertCtrl.create({
           title: 'Are you sure you want to leave the game?',

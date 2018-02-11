@@ -2,15 +2,14 @@
   <trvia-header></trvia-header>
 
   <ion-grid>
-
     <ion-item>
       <ion-label color="primary" stacked>What would you like to call your game?</ion-label>
-      <ion-input placeholder="Game Name" [(ngModel)]="gameName"></ion-input>
+      <ion-input placeholder="Game Name" [(ngModel)]="game.name"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label color="primary">Amount of questions?</ion-label>
-      <ion-select [(ngModel)]="amount">
+      <ion-select [(ngModel)]="game.amountOfQuestions">
         <ion-option value="10">10</ion-option>
         <ion-option value="20">20</ion-option>
         <ion-option value="30">30</ion-option>
@@ -21,7 +20,7 @@
 
     <ion-item>
       <ion-label color="primary">Pick a difficulty level</ion-label>
-      <ion-select [(ngModel)]="difficulty">
+      <ion-select [(ngModel)]="game.difficulty">
         <ion-option value="easy">Easy</ion-option>
         <ion-option value="medium">Medium</ion-option>
         <ion-option value="hard">Hard</ion-option>
@@ -30,14 +29,15 @@
 
     <ion-item>
       <ion-label>Private game</ion-label>
-      <ion-toggle [(ngModel)]="isPrivateGame"></ion-toggle>
+      <ion-toggle [(ngModel)]="game.private"></ion-toggle>
     </ion-item>
 
     <ion-col text-center>
-      <button ion-button icon-end trvia-button [disabled]="!gameName || !amount || !difficulty" (click)="createGame()">
+      <button ion-button icon-end trvia-button [disabled]="formIsComplete()" (click)="createGame()">
         Create Game
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </ion-col>
   </ion-grid>
+
 </ion-content>

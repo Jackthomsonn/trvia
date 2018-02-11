@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core'
+
 import * as io from 'socket.io-client'
+
+import { ISocketEmittableData } from './../../interfaces/ISocketEmittableData'
 
 @Injectable()
 export class SocketServiceProvider {
@@ -11,7 +14,7 @@ export class SocketServiceProvider {
     this.connectClientSocket()
   }
 
-  public emit(event: string, data?: any) {
+  public emit(event: string, data?: ISocketEmittableData) {
     this.socket.emit(event, data)
   }
 
@@ -20,9 +23,10 @@ export class SocketServiceProvider {
   }
 
   public off(events: Array<string>) {
-    if(!events) {
+    if (!events) {
       return
     }
+
     events.forEach(event => this.socket.off(event))
   }
 
