@@ -39,7 +39,7 @@ export class HostGamePage {
 
   public startGame = () => {
     if (this.haptic.available()) {
-      this.haptic.impact({ style: 'heavy' })
+      this.haptic.impact({ style: 'light' })
     }
 
     this.socketServiceProvider.emit('startGame', { gameId: this.getGameId() })

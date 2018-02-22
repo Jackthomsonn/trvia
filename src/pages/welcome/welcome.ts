@@ -31,7 +31,7 @@ export class WelcomePage {
 
   public getStarted() {
     if (this.haptic.available()) {
-      this.haptic.impact({ style: 'heavy' })
+      this.haptic.impact({ style: 'light' })
     }
 
     this.playerServiceProvider.setPlayerInformation({

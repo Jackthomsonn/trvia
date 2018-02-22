@@ -43,7 +43,7 @@ export class CreateGamePage {
 
   public createGame() {
     if (this.haptic.available()) {
-      this.haptic.impact({ style: 'heavy' })
+      this.haptic.impact({ style: 'light' })
     }
 
     this.loadingInstance.present()

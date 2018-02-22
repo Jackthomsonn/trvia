@@ -39,7 +39,7 @@ export class LiveGamesPage {
 
   public joinGame = (gameId) => {
     if (this.haptic.available()) {
-      this.haptic.impact({ style: 'heavy' })
+      this.haptic.impact({ style: 'light' })
     }
 
     this.loadingInstance.present()

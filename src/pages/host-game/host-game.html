@@ -9,7 +9,9 @@
     <h1>Players</h1>
     <ion-list>
       <div class="user" *ngFor="let player of players">
-        <div class="user_avatar"></div>
+        <div class="user_avatar">
+          <ion-icon name="contact"></ion-icon>
+        </div>
         <div class="user_username">
           {{ player.name }}
         </div>

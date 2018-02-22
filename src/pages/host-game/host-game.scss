@@ -9,17 +9,10 @@ page-host-game {
       margin-top: 1em;
       
       &_avatar {
-        background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1M4QJjvsQ-WXnwkpj_bZI1pybqIgwUEgQLKjCChWppLZ9krx0');
-        background-size: cover;
-        width: 25px;
-        height: 25px;
-        border-radius: 100%;
+        font-size: 20px;
 
         &--none {
-          background: transparent;
-          width: 25px;
-          height: 25px;
-          border-radius: 100%;
+          font-size: 20px
         }
 
 
