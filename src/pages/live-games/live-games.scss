@@ -9,7 +9,7 @@ page-live-games {
       padding: 1em;
 
       button {
-        background: linear-gradient(120deg, map-get($colors, 'primary'), map-get($colors, 'gradient'));
+        background: map-get($colors, 'primary');
         padding: 1em;
         color: #FFF;
         font-size: 12px;

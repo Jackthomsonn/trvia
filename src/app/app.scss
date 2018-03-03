@@ -19,9 +19,8 @@
   border-radius: 50px;
   border: none;
   font-size: 16px;
-  background: linear-gradient(map-get($colors, 'primary'), map-get($colors, 'gradient'));
+  background: map-get($colors, 'primary');
   text-transform: capitalize;
-  box-shadow: 0 4px 30px lighten(map-get($colors, 'gradient'), 24%);
   padding: 1em 2em;
   margin-top: 2em;
   width: 270px;
