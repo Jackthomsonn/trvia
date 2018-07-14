@@ -7,9 +7,7 @@ import { ComponentsModule } from '../../components/components.module'
 import { PlayGamePage } from './play-game'
 
 @NgModule({
-  declarations: [
-    PlayGamePage
-  ],
+  declarations: [],
   imports: [
     IonicPageModule.forChild(PlayGamePage),
     ComponentsModule

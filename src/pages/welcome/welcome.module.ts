@@ -7,13 +7,11 @@ import { WelcomePage } from './welcome'
 import { ComponentsModule } from '../../components/components.module'
 
 @NgModule({
-  declarations: [
-    WelcomePage
-  ],
+  declarations: [],
   imports: [
     IonicPageModule.forChild(WelcomePage),
     ComponentsModule
   ],
 })
 
-export class WelcomePageModule {}
+export class WelcomePageModule { }
