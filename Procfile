@@ -1,1 +1,1 @@
-web: npm i ionic@4.12.0 && npm run build && ionic serve
+web: npm i ionic@4.12.0 && npm i --dev && npm run build && ionic serve
