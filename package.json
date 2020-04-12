@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Jack Thomson",
   "engines": {
-    "node": "10.x"
+    "node": "8.x"
   },
   "private": true,
   "scripts": {
